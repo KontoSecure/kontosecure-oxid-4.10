@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<OX>
+    <OXMENU id="KONTOSECURE_MENU_HEAD">
+        <MAINMENU id="mxkontosecure">
+            <SUBMENU id="mxkontosecure_webhooklist" cl="kontosecure_list"></SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>

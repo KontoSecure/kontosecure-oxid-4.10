@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../../library/pay-client/vendor/autoload.php';
+
+require_once __DIR__ . '/../../library/kontosecure-client-php/vendor/autoload.php';
 
 class kontosecure_oxpaymentgateway extends kontosecure_oxpaymentgateway_parent
 {
@@ -29,23 +30,28 @@ class kontosecure_oxpaymentgateway extends kontosecure_oxpaymentgateway_parent
 
     private function kontosecureExecutePayment(oxOrder $oOrder)
     {
-        kontosecure_debug::log('checkout started');
         $oUser = $oOrder->getOrderUser();
         $oConfig = $this->getConfig();
         $oShop = $oConfig->getActiveShop();
         $sApiKey = $oConfig->getConfigParam('sKontoSecureApiKey');
-        kontosecure_debug::log('setting api key: ' . $sApiKey);
 
-        $oKontosecureClient = new PayClient\Client($sApiKey);
-        $oOrderRequest = new \PayClient\Request\CreateOrder();
+        $oKontosecureClient = new \KontoSecure\Client($sApiKey);
+        $oOrderRequest = new \KontoSecure\Request\CreateOrder();
 
+        // Redirect to this location after successful KontoSecure checkout.
         $sSuccessUrl = $oConfig->getSslShopUrl()
-            . '?cl=order&fnc=continueOrder&orderid=' . $oOrder->oxorder__oxid->value;
+            . '?cl=order&fnc=continueOrder&ksoid={orderId}&orderid=' . $oOrder->oxorder__oxid->value;
 
-        $sCanceledFailedUrl = $oConfig->getSslShopUrl()
-            . '?cl=payment&fnc=deleteOrder';
+        // Redirect to this location when:
+        //  - customer canceled the KontoSecure checkout process
+        //  - checkout order timed out
+        //  - KontoSecure checkout failed
+        $sCanceledFailedUrl = $oConfig->getSslShopUrl() . '?cl=payment&fnc=deleteOrder';
 
-        $description = kontosecure_descriptionparser::parse(
+        // This location gets called on various points from KontoSecure
+        $sWebhookUrl = $oConfig->getSslShopUrl() . '?cl=kontosecure_webhookrc';
+
+        $sDescription = kontosecure_descriptionparser::parse(
             $oConfig->getConfigParam('sKontosecureDescription'),
             $oOrder,
             $oUser,
@@ -54,15 +60,14 @@ class kontosecure_oxpaymentgateway extends kontosecure_oxpaymentgateway_parent
 
         $oOrderRequest->setAmount(round($oOrder->oxorder__oxtotalordersum->value, 2))
             ->setClientEmail($oUser->oxuser__oxusername->value)
-            ->setDescription($description)
+            ->setDescription($sDescription)
             ->setSuccessUrl($sSuccessUrl)
             ->setFailedUrl($sCanceledFailedUrl)
             ->setCanceledUrl($sCanceledFailedUrl)
+            ->setWebhookUrl($sWebhookUrl)
         ;
 
-        kontosecure_debug::log('sending request');
         $oResponse = $oKontosecureClient->createOrder($oOrderRequest);
-        kontosecure_debug::log('got: ' . print_r($oResponse, true));
 
         if ($oResponse->isSuccess()) {
             $sTransactionId = $oResponse->getOrderId();

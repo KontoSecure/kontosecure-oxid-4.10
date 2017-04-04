@@ -1,13 +1,23 @@
 <?php
 
+require_once __DIR__ . '/../../library/kontosecure-client-php/vendor/autoload.php';
+
 class kontosecure_order extends kontosecure_order_parent
 {
+    /**
+     * Success return URL
+     * @return string
+     */
     public function continueOrder()
     {
         $oConfig = $this->getConfig();
-        $sOrderId = $oConfig->getRequestParameter('orderid');
+        $sKsOrderId = $oConfig->getRequestParameter('ksoid');
 
         $oSession = new oxSession();
+
+        if (!$this->_isValid($sKsOrderId)) {
+            return 'payment';
+        }
 
         // additional check if we really really have a user now
         if (!$oUser = $this->getUser()) {
@@ -37,5 +47,22 @@ class kontosecure_order extends kontosecure_order_parent
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
         }
+    }
+
+    protected function _isValid($sKsOrderId)
+    {
+        $sApiKey = $this->getConfig()->getConfigParam('sKontoSecureApiKey');
+        $oKontosecureClient = new \KontoSecure\Client($sApiKey);
+
+        $response = $oKontosecureClient->getOrder($sKsOrderId);
+
+        if ($response->isSuccess()
+            && $response->getOrderId() == $sKsOrderId
+            && $response->getState() == 'closed'
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

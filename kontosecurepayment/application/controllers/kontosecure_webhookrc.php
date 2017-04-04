@@ -1,11 +1,13 @@
 <?php
 
+/**
+ * Class kontosecure_webhookrc
+ */
 class kontosecure_webhookrc extends oxUBase
 {
     public function render()
     {
         parent::render();
-        kontosecure_debug::log('received hook');
 
         $aWebhook = $this->_getKontosecureWebhookArray();
         $this->_kontosecureWebhookLog($aWebhook);
@@ -72,6 +74,8 @@ class kontosecure_webhookrc extends oxUBase
         $oKontosecureWebhookLog->kontosecurewebhooklog__state = new oxField($aWebhook['state']);
         $oKontosecureWebhookLog->kontosecurewebhooklog__cancelpos = new oxField($aWebhook['cancel_position']);
         $oKontosecureWebhookLog->kontosecurewebhooklog__createdat = new oxField($aWebhook['created_at']);
+        $oKontosecureWebhookLog->kontosecurewebhooklog__description = new oxField($aWebhook['description']);
+        $oKontosecureWebhookLog->kontosecurewebhooklog__totalamount = new oxField($aWebhook['total_amount']);
         $oKontosecureWebhookLog->save();
     }
 

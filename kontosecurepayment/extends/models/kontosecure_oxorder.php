@@ -15,10 +15,8 @@ class kontosecure_oxorder extends kontosecure_oxorder_parent
                       and oxid = " . $oDb->quote($sOrderId);
 
             if ($oDb->getOne($sSql)) {
-                kontosecure_debug::log('Found unfinished order. Deleting...');
                 $this->delete($sOrderId);
                 $this->getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
-                kontosecure_debug::log('Created new order id: ' . $oSession->getVariable('sess_challenge'));
             }
         }
 
@@ -33,12 +31,9 @@ class kontosecure_oxorder extends kontosecure_oxorder_parent
 
         // deleting remark info only when order is finished
         $oSession->deleteVariable('ordrem');
-        kontosecure_debug::log('Found Ordernr: ' . $this->oxorder__oxordernr->value);
 
         if (!$this->oxorder__oxordernr->value) {
-            kontosecure_debug::log('Ordernr not found. creating...');
             $this->_setNumber();
-            kontosecure_debug::log('Ordernr created: ' . $this->oxorder__oxordernr->value);
         } else {
             oxNew('oxCounter')->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
         }

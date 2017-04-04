@@ -36,19 +36,24 @@ $aModule = array(
     'version'     => '1.0',
     'author'      => 'KontoSecure',
     'extend'      => array(
-        'kontosecure_events' => 'kontosecure/kontosecurepayment/core/kontosecure_base',
         'oxpaymentgateway'   => 'kontosecure/kontosecurepayment/extends/models/kontosecure_oxpaymentgateway',
         'oxorder'            => 'kontosecure/kontosecurepayment/extends/models/kontosecure_oxorder',
         'order'              => 'kontosecure/kontosecurepayment/extends/controllers/kontosecure_order',
         'payment'            => 'kontosecure/kontosecurepayment/extends/controllers/kontosecure_payment',
     ),
     'files'       => array(
-        'kontosecure_debug'             => 'kontosecure/kontosecurepayment/core/utils/kontosecure_debug.php',
-        'kontosecure_base'              => 'kontosecure/kontosecurepayment/core/kontosecure_base.php',
         'kontosecure_events'            => 'kontosecure/kontosecurepayment/core/kontosecure_events.php',
         'kontosecure_webhookrc'         => 'kontosecure/kontosecurepayment/application/controllers/kontosecure_webhookrc.php',
         'kontosecure_descriptionparser' => 'kontosecure/kontosecurepayment/application/models/kontosecure_descriptionparser.php',
         'kontosecure_webhooklog'        => 'kontosecure/kontosecurepayment/application/models/kontosecure_webhooklog.php',
+        'kontosecure'                   => 'kontosecure/kontosecurepayment/application/controllers/admin/kontosecure.php',
+        'kontosecure_main'              => 'kontosecure/kontosecurepayment/application/controllers/admin/kontosecure_main.php',
+        'kontosecure_list'              => 'kontosecure/kontosecurepayment/application/controllers/admin/kontosecure_list.php',
+    ),
+    'templates' => array(
+        'kontosecure.tpl' => 'kontosecure/kontosecurepayment/application/views/admin/tpl/kontosecure.tpl',
+        'kontosecure_main.tpl' => 'kontosecure/kontosecurepayment/application/views/admin/tpl/kontosecure_main.tpl',
+        'kontosecure_list.tpl' => 'kontosecure/kontosecurepayment/application/views/admin/tpl/kontosecure_list.tpl',
     ),
     'blocks'      => array(
         array(

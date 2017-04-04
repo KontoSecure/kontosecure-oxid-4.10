@@ -1,5 +1,5 @@
 -- ----------------------------------
--- author: tronet GmbH
+-- author: KontoSecure
 -- ----------------------------------
 
 INSERT IGNORE INTO `oxpayments`
@@ -16,21 +16,21 @@ SET
     `OXTOAMOUNT`    = 999999,
     `OXCHECKED`     = 1,
     `OXSORT`        = 1,
-    `OXLONGDESC`    = '<div id="payment_form_sofortueberweisung">
+    `OXLONGDESC`    = '<div id="payment_form_kontosecure">
            <ul>
-             <li>Vom T&Uuml;V Saarland zertifiziertes Zahlungssystem mit gepr&uuml;ftem Datenschutz</li>
+             <li>Direkt&uuml;berweisung mit PIN / TAN</li>
              <li>Keine Registrierung notwendig</li>
-             <li>Ware / Content kann bei Verf&uuml;gbarkeit SOFORT versendet / freigeschaltet werden</li>
-             <li>Bitte halten Sie Ihre Online-Banking-Daten (PIN/TAN) bereit</li>
+             <li>Sicher, einfach und schnell</li>
+             <li>Ihre Onlinebanking Zugangsdaten werden nicht gespeichert</li>
            </ul>
         </div>
         <div class="clear"></div>',
-    `OXLONGDESC_1`  = '<div id="payment_form_sofortueberweisung">
+    `OXLONGDESC_1`  = '<div id="payment_form_kontosecure">
            <ul>
-             <li>Payment system with data protection certified by T&Uuml;V Saarland</li>
+             <li>Direct Wire Transfer with PIN / TAN</li>
              <li>No registration required</li>
-             <li>Stock goods / content can be shipped / activated immediately</li>
-             <li>Please have your online banking details at hand</li>
+             <li>Secure, easy and fast</li>
+             <li>Your Online Banking credentials will not be saved</li>
            </ul>
         </div>
         <div class="clear"></div>'
