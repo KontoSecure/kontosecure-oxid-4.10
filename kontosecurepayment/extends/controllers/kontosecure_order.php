@@ -53,8 +53,9 @@ class kontosecure_order extends kontosecure_order_parent
     {
         $sApiKey = $this->getConfig()->getConfigParam('sKontoSecureApiKey');
         $oKontosecureClient = new \KontoSecure\Client($sApiKey);
-
-        $response = $oKontosecureClient->getOrder($sKsOrderId);
+        $oOrderRequest = new \KontoSecure\Request\GetOrder();
+        $oOrderRequest->setOrderId($sKsOrderId);
+        $response = $oKontosecureClient->getOrder($oOrderRequest);
 
         if ($response->isSuccess()
             && $response->getOrderId() == $sKsOrderId
